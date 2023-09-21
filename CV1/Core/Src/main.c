@@ -102,13 +102,14 @@ int main(void)
 
  	  for (uint8_t i = 0; i < 32; i++){
 
-	  		  if (sos & (1UL << i)){
+	  		  if (sos & 1){
 	  			  LL_GPIO_SetOutputPin(LD2_GPIO_Port, LD2_Pin); /*1*/
 	  		  }
 	  		  else{
 	  			  LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin); /*0*/
 	  		  }
 	  		LL_mDelay(200);
+	  		sos = sos >> 1;
 	  	  }
 
     /* USER CODE END WHILE */
