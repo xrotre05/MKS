@@ -96,13 +96,29 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin); /*0*/
+
+	  /*uint8_t poleS[32]={1,0,1,0,1};*/
+ 	  /*uint8_t poleT[32]={1,1,1,0,1,1,1,0,1,1,1};*/
+ 	  uint8_t pole[32]={1,0,1,0,1,0,0,1,1,1,0,1,1,1,0,1,1,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0};
+
+	  	  for (uint8_t i = 0; i < sizeof(pole); i++){
+
+	  		  if (pole[i]==1){
+	  			  LL_GPIO_SetOutputPin(LD2_GPIO_Port, LD2_Pin); /*1*/
+
+	  		  }
+	  		  else{
+	  			  LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin); /*0*/
+
+	  		  }
+	  		LL_mDelay(200);
+	  	  }
 
 
-	  LL_GPIO_SetOutputPin(LD2_GPIO_Port, LD2_Pin);
-	  LL_mDelay(200);
 
-	  LL_GPIO_ResetOutputPin(LD2_GPIO_Port, LD2_Pin);
-	  LL_mDelay(200);
+
+
 
     /* USER CODE END WHILE */
 
