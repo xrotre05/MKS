@@ -33,6 +33,9 @@
 /* USER CODE BEGIN PD */
 
  #define LED_TIME_BLINK 300
+ #define LED_TIME_40	40
+ #define LED_TIME_SHORT 100
+ #define LED_TIME_LONG 	1000
 
 /* USER CODE END PD */
 
@@ -98,20 +101,43 @@ int main(void)
  	  {
  	    static uint32_t delay;
  	    if (Tick > delay + LED_TIME_BLINK) {
- 	    	LL_GPIO_TogglePin(LD2_GPIO_Port,LL_GPIO_PIN_4);
+ 	    	LL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
  			delay = Tick;
  		}
  	  }
 
-  void tlacitka()
+  void tlacitka(void)
   {
-	  static uint32_t old_s2;
-	   uint32_t new_s2 = LL_GPIO_IsInputPinSet(S2_GPIO_Port, S2_Pin);
-	   if (old_s2 && !new_s2) { // falling edge
-	   off_time = Tick + LED_TIME_SHORT;
-	   LL_GPIO_SetOutputPin(LED2_GPIO_Port, LED2_Pin);
-	   }
-	   old_s2 = new_s2;
+	  static uint32_t delay2;
+	  if (Tick > delay2 + LED_TIME_40) { // delay 40ms
+
+		  static uint32_t old_s1;
+		  static uint32_t old_s2;
+
+		  static uint32_t off_time;
+
+		  uint32_t new_s1 = LL_GPIO_IsInputPinSet(S1_GPIO_Port, S1_Pin);
+		  uint32_t new_s2 = LL_GPIO_IsInputPinSet(S2_GPIO_Port, S2_Pin);
+
+		  // obsluha tlačítka S1
+		  if (old_s1 && !new_s1) { // falling edge S1
+			  off_time = Tick + LED_TIME_LONG;
+		  	  LL_GPIO_SetOutputPin(LED2_GPIO_Port, LED2_Pin);
+		  }
+		  old_s1 = new_s1;
+
+		  // obsluha tlačítka S2
+		  if (old_s2 && !new_s2) { // falling edge S2
+			  off_time = Tick + LED_TIME_SHORT;
+			  LL_GPIO_SetOutputPin(LED2_GPIO_Port, LED2_Pin);
+		  }
+		  old_s2 = new_s2;
+
+
+		  if (Tick > off_time) {
+			LL_GPIO_ResetOutputPin(LED2_GPIO_Port, LED2_Pin);
+		  }
+	  }
   }
 
   /* USER CODE END 2 */
@@ -123,7 +149,7 @@ int main(void)
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
 	  blikac();
-
+	  tlacitka();
 
   }
   /* USER CODE END 3 */
