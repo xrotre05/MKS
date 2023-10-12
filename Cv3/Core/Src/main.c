@@ -90,7 +90,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   	  sct_init();
- 	  sct_led(0x7A5C36DE);
+ 	  /*sct_led(0x7A5C36DE);*/
   	  HAL_Delay(1000);
 
   /* USER CODE END 2 */
@@ -100,6 +100,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  for(uint8_t i = 0; i < 10; i++){
+		 sct_value(i*111);
+		 HAL_Delay(500);
+	  }
 
     /* USER CODE BEGIN 3 */
   }
