@@ -100,7 +100,10 @@ int main(void)
   	  static volatile uint32_t raw_pot;
   	  void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
   	  	   	{
-  	  	   	 raw_pot = HAL_ADC_GetValue(hadc);
+  	  	 static uint32_t avg_pot;
+  	  	 raw_pot = avg_pot >> 6;
+  	  	 avg_pot -= raw_pot;
+  	  	 avg_pot += HAL_ADC_GetValue(hadc);
   	  	   	}
 
 
