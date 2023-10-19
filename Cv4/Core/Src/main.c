@@ -94,7 +94,14 @@ int main(void)
   MX_ADC_Init();
   /* USER CODE BEGIN 2 */
   	  sct_init();
+  	  HAL_ADCEx_Calibration_Start(&hadc);
+  	  HAL_ADC_Start_IT(&hadc);
 
+  	  static volatile uint32_t raw_pot;
+  	  void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+  	  	   	{
+  	  	   	 raw_pot = HAL_ADC_GetValue(hadc);
+  	  	   	}
 
 
   /* USER CODE END 2 */
@@ -103,7 +110,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  HAL_ADC_ConvCpltCallback(&hadc);
     /* USER CODE END WHILE */
+
+	  sct_value((raw_pot*(500-1))/4096);
+
+
 
     /* USER CODE BEGIN 3 */
   }
