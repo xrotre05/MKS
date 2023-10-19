@@ -113,9 +113,8 @@ int main(void)
 	  HAL_ADC_ConvCpltCallback(&hadc);
     /* USER CODE END WHILE */
 
-	  sct_value((raw_pot*(500-1))/4096);
-
-
+	  sct_value((raw_pot*(500-1))/4096,((raw_pot*9)/4096));
+	  HAL_Delay(50);
 
     /* USER CODE BEGIN 3 */
   }
