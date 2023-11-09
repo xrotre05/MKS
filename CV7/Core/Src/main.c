@@ -288,9 +288,45 @@ static void MX_GPIO_Init(void)
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
+	int16_t msg;
+	uint16_t loop;
   /* Infinite loop */
   for(;;)
   {
+	  switch (loop) {
+	  case 0:
+		  msg=0;
+		  loop++;
+		  break;
+	  case 1:
+		  msg=-5000;
+		  loop++;
+		  break;
+	  case 2:
+		  msg=100;
+		  loop++;
+		  break;
+	  case 3:
+		  msg=5000;
+		  loop++;
+		  break;
+	  case 4:
+		  msg=-2000;
+		  loop++;
+		  break;
+	  case 5:
+		  msg=1000;
+		  loop=0;
+		  break;
+	  default:
+		  msg=5;
+		  loop=0;
+		  break;
+	  }
+
+	  xQueueSend(xVisualQueueHandle, &msg, 0);
+	  osDelay(300);
+
     osDelay(1);
   }
   /* USER CODE END 5 */
@@ -305,13 +341,27 @@ void StartDefaultTask(void const * argument)
 /* USER CODE END Header_StartVisualTask */
 void StartVisualTask(void const * argument)
 {
-  /* USER CODE BEGIN StartVisualTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END StartVisualTask */
+	/* USER CODE BEGIN StartVisualTask */
+	int16_t msg;
+	/* Infinite loop */
+	for(;;)
+	{
+		if (xQueueReceive(xVisualQueueHandle, &msg, portMAX_DELAY)) {
+			if (msg<-1000){
+				HAL_GPIO_WritePin(LED1_GPIO_Port,LED1_Pin,1);
+				HAL_GPIO_WritePin(LED2_GPIO_Port,LED2_Pin,0);
+			}else if(msg>1000){
+				HAL_GPIO_WritePin(LED1_GPIO_Port,LED1_Pin,0);
+				HAL_GPIO_WritePin(LED2_GPIO_Port,LED2_Pin,1);
+			}else {
+				HAL_GPIO_WritePin(LED1_GPIO_Port,LED1_Pin,0);
+				HAL_GPIO_WritePin(LED2_GPIO_Port,LED2_Pin,0);
+			}
+
+		}
+		osDelay(1);
+	}
+	/* USER CODE END StartVisualTask */
 }
 
 /* USER CODE BEGIN Header_StartAcceleroTask */
