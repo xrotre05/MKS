@@ -466,16 +466,38 @@ void StartVisualTask(void const * argument)
 void StartAcceleroTask(void const * argument)
 {
   /* USER CODE BEGIN StartAcceleroTask */
+	lis2dw12_full_scale_set(&lis2dw12, LIS2DW12_2g);
+	lis2dw12_power_mode_set(&lis2dw12, LIS2DW12_CONT_LOW_PWR_LOW_NOISE_2);
+	lis2dw12_block_data_update_set(&lis2dw12, PROPERTY_ENABLE);
+	lis2dw12_fifo_mode_set(&lis2dw12, LIS2DW12_STREAM_MODE); // enable continuous FIFO
+	lis2dw12_data_rate_set(&lis2dw12, LIS2DW12_XL_ODR_25Hz); // enable part from power-down
 
+	uint32_t tim;
 	/* Infinite loop */
 	for(;;)
 	{
-		// Check device ID
+		/*// Check device ID
 		uint8_t whoamI = 0;
 		lis2dw12_device_id_get(&lis2dw12, &whoamI);
 		printf("LIS2DW12_ID %s\n", (whoamI == LIS2DW12_ID) ? "OK" : "FAIL");
-		osDelay(500);
-		osDelay(1);
+		 */
+
+		uint8_t samples;
+		int16_t raw_acceleration[3];
+		lis2dw12_fifo_data_level_get(&lis2dw12, &samples);
+		for (uint8_t i = 0; i < samples; i++) {
+			// Read acceleration data
+			lis2dw12_acceleration_raw_get(&lis2dw12, raw_acceleration);
+		}
+		xQueueSend(xVisualQueueHandle, &raw_acceleration[0], 0);
+		osDelay(50);
+
+		tim++;
+			if (tim>=20){
+				printf("X=%d Y=%d Z=%d\n", raw_acceleration[0], raw_acceleration[1], raw_acceleration[2]);
+				tim=0;
+			}
+
 	}
   /* USER CODE END StartAcceleroTask */
 }
