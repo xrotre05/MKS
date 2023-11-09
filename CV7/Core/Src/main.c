@@ -1,20 +1,20 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2023 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -23,6 +23,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "lis2dw12_reg.h"
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,6 +43,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c1;
+
 UART_HandleTypeDef huart2;
 
 osThreadId defaultTaskHandle;
@@ -55,6 +59,7 @@ osMessageQId xVisualQueueHandle;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_I2C1_Init(void);
 void StartDefaultTask(void const * argument);
 void StartVisualTask(void const * argument);
 void StartAcceleroTask(void const * argument);
@@ -65,6 +70,36 @@ void StartAcceleroTask(void const * argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+static int32_t platform_write(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
+static int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
+static stmdev_ctx_t lis2dw12 = {
+ .write_reg = platform_write,
+ .read_reg = platform_read,
+ .handle = &hi2c1,
+};
+
+/*
+ * Replace the functions "platform_write" and "platform_read" with your
+ * platform specific read and write function.
+ */
+static int32_t platform_write(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len)
+{
+	HAL_I2C_Mem_Write(handle, LIS2DW12_I2C_ADD_H, reg, I2C_MEMADD_SIZE_8BIT, bufp, len, 1000);
+	return 0;
+}
+static int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len)
+{
+	HAL_I2C_Mem_Read(handle, LIS2DW12_I2C_ADD_H, reg, I2C_MEMADD_SIZE_8BIT, bufp, len, 1000);
+	return 0;
+}
+
+int _write(int file, char const *buf, int n)
+{
+ /* stdout redirection to UART2 */
+ HAL_UART_Transmit(&huart2, (uint8_t*)(buf), n, HAL_MAX_DELAY);
+ return n;
+}
 
 /* USER CODE END 0 */
 
@@ -97,20 +132,21 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
+	/* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
+	/* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
+	/* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
   /* Create the queue(s) */
@@ -119,7 +155,7 @@ int main(void)
   xVisualQueueHandle = osMessageCreate(osMessageQ(xVisualQueue), NULL);
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
+	/* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -136,7 +172,7 @@ int main(void)
   AcceleroTaskHandle = osThreadCreate(osThread(AcceleroTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+	/* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
@@ -145,12 +181,12 @@ int main(void)
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+	while (1)
+	{
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+	}
   /* USER CODE END 3 */
 }
 
@@ -162,6 +198,7 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -190,6 +227,60 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_I2C1;
+  PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.Timing = 0x2000090E;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
 }
 
 /**
@@ -280,68 +371,69 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN Header_StartDefaultTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
+ * @brief  Function implementing the defaultTask thread.
+ * @param  argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
-	int16_t msg;
-	uint16_t loop;
-  /* Infinite loop */
-  for(;;)
-  {
-	  switch (loop) {
-	  case 0:
-		  msg=0;
-		  loop++;
-		  break;
-	  case 1:
-		  msg=-5000;
-		  loop++;
-		  break;
-	  case 2:
-		  msg=100;
-		  loop++;
-		  break;
-	  case 3:
-		  msg=5000;
-		  loop++;
-		  break;
-	  case 4:
-		  msg=-2000;
-		  loop++;
-		  break;
-	  case 5:
-		  msg=1000;
-		  loop=0;
-		  break;
-	  default:
-		  msg=5;
-		  loop=0;
-		  break;
-	  }
+	//int16_t msg;
+	//uint16_t loop;
+	/* Infinite loop */
+	for(;;)
+	{
+		/*
+		switch (loop) {
+		case 0:
+			msg=0;
+			loop++;
+			break;
+		case 1:
+			msg=-5000;
+			loop++;
+			break;
+		case 2:
+			msg=100;
+			loop++;
+			break;
+		case 3:
+			msg=5000;
+			loop++;
+			break;
+		case 4:
+			msg=-2000;
+			loop++;
+			break;
+		case 5:
+			msg=1000;
+			loop=0;
+			break;
+		default:
+			msg=5;
+			loop=0;
+			break;
+		}
 
-	  xQueueSend(xVisualQueueHandle, &msg, 0);
-	  osDelay(300);
-
-    osDelay(1);
-  }
+		xQueueSend(xVisualQueueHandle, &msg, 0);
+		osDelay(300);
+		*/
+		osDelay(1);
+	}
   /* USER CODE END 5 */
 }
 
 /* USER CODE BEGIN Header_StartVisualTask */
 /**
-* @brief Function implementing the VisualTask thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the VisualTask thread.
+ * @param argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartVisualTask */
 void StartVisualTask(void const * argument)
 {
-	/* USER CODE BEGIN StartVisualTask */
+  /* USER CODE BEGIN StartVisualTask */
 	int16_t msg;
 	/* Infinite loop */
 	for(;;)
@@ -361,24 +453,30 @@ void StartVisualTask(void const * argument)
 		}
 		osDelay(1);
 	}
-	/* USER CODE END StartVisualTask */
+  /* USER CODE END StartVisualTask */
 }
 
 /* USER CODE BEGIN Header_StartAcceleroTask */
 /**
-* @brief Function implementing the AcceleroTask thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the AcceleroTask thread.
+ * @param argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartAcceleroTask */
 void StartAcceleroTask(void const * argument)
 {
   /* USER CODE BEGIN StartAcceleroTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+
+	/* Infinite loop */
+	for(;;)
+	{
+		// Check device ID
+		uint8_t whoamI = 0;
+		lis2dw12_device_id_get(&lis2dw12, &whoamI);
+		printf("LIS2DW12_ID %s\n", (whoamI == LIS2DW12_ID) ? "OK" : "FAIL");
+		osDelay(500);
+		osDelay(1);
+	}
   /* USER CODE END StartAcceleroTask */
 }
 
@@ -410,11 +508,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+	/* User can add his own implementation to report the HAL error return state */
+	__disable_irq();
+	while (1)
+	{
+	}
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -429,7 +527,7 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
+	/* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
