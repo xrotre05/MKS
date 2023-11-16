@@ -493,10 +493,10 @@ void StartAcceleroTask(void const * argument)
 		osDelay(50);
 
 		tim++;
-			if (tim>=20){
-				printf("X=%d Y=%d Z=%d\n", raw_acceleration[0], raw_acceleration[1], raw_acceleration[2]);
-				tim=0;
-			}
+		if (tim>=20){
+			printf("X=%d Y=%d Z=%d\n", raw_acceleration[0], raw_acceleration[1], raw_acceleration[2]);
+			tim=0;
+		}
 
 	}
   /* USER CODE END StartAcceleroTask */
