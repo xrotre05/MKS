@@ -105,7 +105,7 @@ instance:
         - matchValueStr: '10Hz'
         - enableCounterReset: 'true'
         - enableCounterStop: 'false'
-        - outControl: 'kCTIMER_Output_NoAction'
+        - outControl: 'kCTIMER_Output_Toggle'
         - outPinInitValue: 'low'
         - enableInterrupt: 'true'
     - interruptCallbackConfig:
@@ -126,7 +126,7 @@ const ctimer_match_config_t CTIMER0_Match_0_config = {
   .matchValue = 99,
   .enableCounterReset = true,
   .enableCounterStop = false,
-  .outControl = kCTIMER_Output_NoAction,
+  .outControl = kCTIMER_Output_Toggle,
   .outPinInitState = false,
   .enableInterrupt = true
 };
@@ -142,12 +142,92 @@ static void CTIMER0_init(void) {
 }
 
 /***********************************************************************************************************************
+ * CTIMER2 initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'CTIMER2'
+- type: 'ctimer'
+- mode: 'Capture_Match'
+- custom_name_enabled: 'false'
+- type_id: 'ctimer_c8b90232d8b6318ba1dac2cf08fb5f4a'
+- functional_group: 'BOARD_InitPeripherals'
+- peripheral: 'CTIMER2'
+- config_sets:
+  - fsl_ctimer:
+    - ctimerConfig:
+      - mode: 'kCTIMER_TimerMode'
+      - clockSource: 'FunctionClock'
+      - clockSourceFreq: 'BOARD_BootClockFROHF96M'
+      - timerPrescaler: '1000Hz'
+    - EnableTimerInInit: 'false'
+    - matchChannels:
+      - 0:
+        - matchChannelPrefixId: 'Match_1'
+        - matchChannel: 'kCTIMER_Match_1'
+        - matchValueStr: '10Hz'
+        - enableCounterReset: 'true'
+        - enableCounterStop: 'false'
+        - outControl: 'kCTIMER_Output_Toggle'
+        - outPinInitValue: 'low'
+        - enableInterrupt: 'false'
+      - 1:
+        - matchChannelPrefixId: 'Match_2'
+        - matchChannel: 'kCTIMER_Match_2'
+        - matchValueStr: '50Hz'
+        - enableCounterReset: 'false'
+        - enableCounterStop: 'false'
+        - outControl: 'kCTIMER_Output_Toggle'
+        - outPinInitValue: 'low'
+        - enableInterrupt: 'false'
+    - interruptCallbackConfig:
+      - interrupt:
+        - IRQn: 'CTIMER1_IRQn'
+        - enable_priority: 'false'
+        - priority: '0'
+      - callback: 'kCTIMER_NoCallback'
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+const ctimer_config_t CTIMER2_config = {
+  .mode = kCTIMER_TimerMode,
+  .input = kCTIMER_Capture_0,
+  .prescale = 95999
+};
+const ctimer_match_config_t CTIMER2_Match_1_config = {
+  .matchValue = 99,
+  .enableCounterReset = true,
+  .enableCounterStop = false,
+  .outControl = kCTIMER_Output_Toggle,
+  .outPinInitState = false,
+  .enableInterrupt = false
+};
+const ctimer_match_config_t CTIMER2_Match_2_config = {
+  .matchValue = 19,
+  .enableCounterReset = false,
+  .enableCounterStop = false,
+  .outControl = kCTIMER_Output_Toggle,
+  .outPinInitState = false,
+  .enableInterrupt = false
+};
+
+static void CTIMER2_init(void) {
+  /* CTIMER2 peripheral initialization */
+  CTIMER_Init(CTIMER2_PERIPHERAL, &CTIMER2_config);
+  /* Match channel 1 of CTIMER2 peripheral initialization */
+  CTIMER_SetupMatch(CTIMER2_PERIPHERAL, CTIMER2_MATCH_1_CHANNEL, &CTIMER2_Match_1_config);
+  /* Match channel 2 of CTIMER2 peripheral initialization */
+  CTIMER_SetupMatch(CTIMER2_PERIPHERAL, CTIMER2_MATCH_2_CHANNEL, &CTIMER2_Match_2_config);
+}
+
+/***********************************************************************************************************************
  * Initialization functions
  **********************************************************************************************************************/
 void BOARD_InitPeripherals(void)
 {
   /* Initialize components */
   CTIMER0_init();
+  CTIMER2_init();
 }
 
 /***********************************************************************************************************************

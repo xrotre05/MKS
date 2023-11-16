@@ -88,6 +88,7 @@
                      </pin_features>
                   </pin>
                   <pin peripheral="CTIMER2" signal="MATCH, 1" pin_num="1" pin_signal="PIO1_4/FC0_SCK/SD0_D0/CTIMER2_MAT1/SCT0_OUT0/FREQME_GPIO_CLK_A"/>
+                  <pin peripheral="CTIMER2" signal="MATCH, 2" pin_num="9" pin_signal="PIO1_7/FC0_RTS_SCL_SSEL1/SD0_D1/CTIMER2_MAT2/SCT_GPI4"/>
                </pins>
             </function>
          </functions_list>
@@ -317,6 +318,21 @@
                         <data type="Boolean">true</data>
                      </feature>
                   </dependency>
+                  <dependency resourceType="ClockOutput" resourceId="CTIMER2_clock" description="CTIMER2_clock is inactive." problem_level="2" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="frequency" evaluation="greaterThan">
+                        <data type="Frequency" unit="Hz">0</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="CTIMER2.ctimer_match.1" description="Match output of the match 1 channel of peripheral CTIMER2 is not routed." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="routed" evaluation="equal">
+                        <data type="Boolean">true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="CTIMER2.ctimer_match.2" description="Match output of the match 2 channel of peripheral CTIMER2 is not routed." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="routed" evaluation="equal">
+                        <data type="Boolean">true</data>
+                     </feature>
+                  </dependency>
                </dependencies>
                <instances>
                   <instance name="NVIC" uuid="f372d398-790a-417b-951a-3b873d82247c" type="nvic" type_id="nvic_57b5eef3774cc60acaede6f5b8bddc67" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
@@ -343,7 +359,7 @@
                               <setting name="matchValueStr" value="10Hz"/>
                               <setting name="enableCounterReset" value="true"/>
                               <setting name="enableCounterStop" value="false"/>
-                              <setting name="outControl" value="kCTIMER_Output_NoAction"/>
+                              <setting name="outControl" value="kCTIMER_Output_Toggle"/>
                               <setting name="outPinInitValue" value="low"/>
                               <setting name="enableInterrupt" value="true"/>
                            </struct>
@@ -356,6 +372,47 @@
                            </struct>
                            <setting name="callback" value="kCTIMER_SingleCallback"/>
                            <setting name="singleCallback" value="Timer_IRQ"/>
+                        </struct>
+                     </config_set>
+                  </instance>
+                  <instance name="CTIMER2" uuid="3d6e61b7-9533-491c-8e76-6a743ddd6247" type="ctimer" type_id="ctimer_c8b90232d8b6318ba1dac2cf08fb5f4a" mode="Capture_Match" peripheral="CTIMER2" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="fsl_ctimer">
+                        <struct name="ctimerConfig">
+                           <setting name="mode" value="kCTIMER_TimerMode"/>
+                           <setting name="clockSource" value="FunctionClock"/>
+                           <setting name="clockSourceFreq" value="BOARD_BootClockFROHF96M"/>
+                           <setting name="timerPrescaler" value="1000Hz"/>
+                        </struct>
+                        <setting name="EnableTimerInInit" value="false"/>
+                        <array name="matchChannels">
+                           <struct name="0">
+                              <setting name="matchChannelPrefixId" value="Match_1"/>
+                              <setting name="matchChannel" value="kCTIMER_Match_1"/>
+                              <setting name="matchValueStr" value="10Hz"/>
+                              <setting name="enableCounterReset" value="true"/>
+                              <setting name="enableCounterStop" value="false"/>
+                              <setting name="outControl" value="kCTIMER_Output_Toggle"/>
+                              <setting name="outPinInitValue" value="low"/>
+                              <setting name="enableInterrupt" value="false"/>
+                           </struct>
+                           <struct name="1">
+                              <setting name="matchChannelPrefixId" value="Match_2"/>
+                              <setting name="matchChannel" value="kCTIMER_Match_2"/>
+                              <setting name="matchValueStr" value="50Hz"/>
+                              <setting name="enableCounterReset" value="false"/>
+                              <setting name="enableCounterStop" value="false"/>
+                              <setting name="outControl" value="kCTIMER_Output_Toggle"/>
+                              <setting name="outPinInitValue" value="low"/>
+                              <setting name="enableInterrupt" value="false"/>
+                           </struct>
+                        </array>
+                        <struct name="interruptCallbackConfig">
+                           <struct name="interrupt">
+                              <setting name="IRQn" value="CTIMER1_IRQn"/>
+                              <setting name="enable_priority" value="false"/>
+                              <setting name="priority" value="0"/>
+                           </struct>
+                           <setting name="callback" value="kCTIMER_NoCallback"/>
                         </struct>
                      </config_set>
                   </instance>

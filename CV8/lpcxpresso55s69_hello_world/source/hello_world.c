@@ -24,7 +24,7 @@
  * Prototypes
  ******************************************************************************/
 void Timer_IRQ(uint32_t flags){
-	PRINTF("Hello World");
+	PRINTF("Hello World ");
 }
 /*******************************************************************************
  * Code
@@ -46,6 +46,7 @@ int main(void)
     BOARD_InitBootPeripherals();
 
     CTIMER_StartTimer(CTIMER0_PERIPHERAL);
+    CTIMER_StartTimer(CTIMER2_PERIPHERAL);
     PRINTF("hello world.\r\n");
 
     while (1)
