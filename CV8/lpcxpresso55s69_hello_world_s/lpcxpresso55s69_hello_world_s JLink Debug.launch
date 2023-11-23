@@ -2,9 +2,10 @@
 <launchConfiguration type="com.nxp.mcuxpresso.core.debug.support.segger.launchConfigurationType">
     <stringAttribute key="com.crt.ctrlcenter.OFSemuDetails" value="JLink727418373"/>
     <booleanAttribute key="com.crt.ctrlcenter.mainBreakIsHardware" value="true"/>
-    <booleanAttribute key="com.crt.ctrlcenter.saveState" value="true"/>
     <stringAttribute key="com.crt.ctrlcenter.serialNumber" value="USB 727418373"/>
-    <mapAttribute key="com.crt.ctrlcenter.symbolsGroupSettings"/>
+    <mapAttribute key="com.crt.ctrlcenter.symbolsGroupSettings">
+        <mapEntry key="${workspace_loc:/lpcxpresso55s69_hello_world_ns/Debug/lpcxpresso55s69_hello_world_ns.axf}" value=""/>
+    </mapAttribute>
     <intAttribute key="com.nxp.mcuxpresso.core.debug.support.segger.launches.JLinkLaunchConfigHandler.version" value="2"/>
     <booleanAttribute key="com.nxp.mcuxpresso.flash.clear.console" value="true"/>
     <booleanAttribute key="com.nxp.mcuxpresso.flash.confirm" value="false"/>
@@ -12,7 +13,7 @@
     <stringAttribute key="com.nxp.mcuxpresso.ide.probe.name" value="J-Link LPCXpresso V2"/>
     <stringAttribute key="com.nxp.mcuxpresso.ide.probe.nickname" value=""/>
     <stringAttribute key="com.nxp.mcuxpresso.ide.probe.type" value="USB"/>
-    <stringAttribute key="com.nxp.mcuxpresso.jlink.flash.base.address" value="0x0"/>
+    <stringAttribute key="com.nxp.mcuxpresso.jlink.flash.base.address" value="0x10000000"/>
     <stringAttribute key="com.nxp.mcuxpresso.jlink.flash.executable" value="hex"/>
     <booleanAttribute key="com.nxp.mcuxpresso.jlink.flash.halt.target" value="true"/>
     <booleanAttribute key="com.nxp.mcuxpresso.jlink.flash.reset.target" value="true"/>
@@ -24,16 +25,16 @@
     <stringAttribute key="com.nxp.mcuxpresso.segger.init.register" value="-noir"/>
     <stringAttribute key="com.nxp.mcuxpresso.segger.jlinkscriptfile" value=""/>
     <stringAttribute key="com.nxp.mcuxpresso.segger.options" value=""/>
-    <intAttribute key="com.nxp.mcuxpresso.segger.port" value="2331"/>
+    <intAttribute key="com.nxp.mcuxpresso.segger.port" value="2339"/>
     <booleanAttribute key="com.nxp.mcuxpresso.segger.powertarget 50" value="false"/>
-    <stringAttribute key="com.nxp.mcuxpresso.segger.reset" value="false;"/>
+    <stringAttribute key="com.nxp.mcuxpresso.segger.reset" value="true;"/>
     <stringAttribute key="com.nxp.mcuxpresso.segger.rtos" value="false;GDBServer/RTOSPlugin_FreeRTOS"/>
     <stringAttribute key="com.nxp.mcuxpresso.segger.select" value="USB=727418373"/>
     <stringAttribute key="com.nxp.mcuxpresso.segger.silent" value="-nosilent"/>
     <stringAttribute key="com.nxp.mcuxpresso.segger.singlerun" value="-singlerun"/>
     <stringAttribute key="com.nxp.mcuxpresso.segger.speed" value="auto"/>
-    <intAttribute key="com.nxp.mcuxpresso.segger.swoport" value="2332"/>
-    <intAttribute key="com.nxp.mcuxpresso.segger.telnetport" value="2333"/>
+    <intAttribute key="com.nxp.mcuxpresso.segger.swoport" value="2337"/>
+    <intAttribute key="com.nxp.mcuxpresso.segger.telnetport" value="2338"/>
     <stringAttribute key="com.nxp.mcuxpresso.segger.verify" value="-vd"/>
     <stringAttribute key="disconnect" value="Run"/>
     <stringAttribute key="launch.config.handler" value="com.nxp.mcuxpresso.core.debug.support.segger.launches.JLinkLaunchConfigHandler"/>
@@ -48,7 +49,7 @@
     <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.loadImage" value="true"/>
     <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.loadSymbols" value="true"/>
     <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.pcRegister" value=""/>
-    <intAttribute key="org.eclipse.cdt.debug.gdbjtag.core.portNumber" value="2331"/>
+    <intAttribute key="org.eclipse.cdt.debug.gdbjtag.core.portNumber" value="2339"/>
     <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.runCommands" value=""/>
     <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setPcRegister" value="false"/>
     <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setResume" value="false"/>
@@ -71,14 +72,13 @@
     <stringAttribute key="org.eclipse.cdt.dsf.gdb.TRACEPOINT_MODE" value="TP_NORMAL_ONLY"/>
     <booleanAttribute key="org.eclipse.cdt.dsf.gdb.UPDATE_THREADLIST_ON_SUSPEND" value="false"/>
     <intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="2"/>
-    <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_ID" value="gdb"/>
     <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="remote"/>
-    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Debug\lpcxpresso55s69_hello_world.axf"/>
-    <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="lpcxpresso55s69_hello_world"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Debug\lpcxpresso55s69_hello_world_s.axf"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="lpcxpresso55s69_hello_world_s"/>
     <booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="false"/>
-    <stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.crt.advproject.config.exe.debug.1773853538"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.crt.advproject.config.exe.debug.470525329"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/lpcxpresso55s69_hello_world"/>
+        <listEntry value="/lpcxpresso55s69_hello_world_s"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="4"/>
