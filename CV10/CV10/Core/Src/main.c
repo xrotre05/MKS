@@ -50,8 +50,8 @@ TIM_HandleTypeDef htim3;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
-static volatile int key ;
-static volatile const uint32_t code[5]={ 7, 9, 3, 2, 12 };
+static volatile int key =-1;
+static const uint32_t code[]={ 7, 9, 3, 2, 12 };
 
 
 
@@ -106,6 +106,9 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim3);
 
 	uint32_t seq=0;
+	uint32_t time=0;
+
+	HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin,0);
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -117,12 +120,33 @@ int main(void)
 		/* USER CODE BEGIN 3 */
 
 		if (key!=-1){
-
-
 			printf("%d\n",key);
+			printf("%lu\n",code[seq]);
+			time=HAL_GetTick();
+			if (key==code[seq]){
+				if (seq==4){
+					printf("Password accepted\n");
+					HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin,1);
+					HAL_Delay(5000);
+					HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin,0);
+					seq=0;
+				}else{
+					printf("Correct\n");
+					seq++;
+				}
+			}else{
+				printf("Incorrect\n");
+				seq=0;
 
-			HAL_Delay(500);
+			}
+			HAL_Delay(250);
 			key=-1;
+		}
+
+
+		if ((HAL_GetTick()-time>3000)&&(seq!=0)){
+			printf("timeout\n");
+			seq=0;
 		}
 
 
@@ -130,7 +154,7 @@ int main(void)
 		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
 		HAL_Delay(250);
 		printf("tick\n");
-		*/
+		 */
 	}
 	/* USER CODE END 3 */
 }

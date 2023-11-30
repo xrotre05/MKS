@@ -1,18 +1,96 @@
-11:19:41 **** Incremental Build of configuration Debug for project CV10 ****
+11:49:41 **** Incremental Build of configuration Debug for project CV10 ****
 make -j4 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
 ../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:108:18: warning: unused variable 'seq' [-Wunused-variable]
-  108 |         uint32_t seq=0;
-      |                  ^~~
+../Core/Src/main.c:109:18: warning: variable 'time' set but not used [-Wunused-but-set-variable]
+  109 |         uint32_t time=0;
+      |                  ^~~~
 arm-none-eabi-gcc -o "CV10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Temp\xrotre05\MKS\CV10\CV10\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="CV10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: CV10.elf
  
 arm-none-eabi-size   CV10.elf 
 arm-none-eabi-objdump -h -S  CV10.elf  > "CV10.list"
    text	   data	    bss	    dec	    hex	filename
-  15864	    112	   2056	  18032	   4670	CV10.elf
+  16092	    136	   2048	  18276	   4764	CV10.elf
 Finished building: default.size.stdout
  
 Finished building: CV10.list
+ 
+11:49:54 **** Incremental Build of configuration Debug for project CV10 ****
+make -j4 all 
+arm-none-eabi-size   CV10.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16092	    136	   2048	  18276	   4764	CV10.elf
+Finished building: default.size.stdout
+ 
+11:51:38 **** Incremental Build of configuration Debug for project CV10 ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:109:18: warning: variable 'time' set but not used [-Wunused-but-set-variable]
+  109 |         uint32_t time=0;
+      |                  ^~~~
+arm-none-eabi-gcc -o "CV10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Temp\xrotre05\MKS\CV10\CV10\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="CV10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: CV10.elf
+ 
+arm-none-eabi-size   CV10.elf 
+arm-none-eabi-objdump -h -S  CV10.elf  > "CV10.list"
+   text	   data	    bss	    dec	    hex	filename
+  16056	    136	   2048	  18240	   4740	CV10.elf
+Finished building: default.size.stdout
+ 
+Finished building: CV10.list
+ 
+11:52:49 **** Incremental Build of configuration Debug for project CV10 ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:109:18: warning: variable 'time' set but not used [-Wunused-but-set-variable]
+  109 |         uint32_t time=0;
+      |                  ^~~~
+arm-none-eabi-gcc -o "CV10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Temp\xrotre05\MKS\CV10\CV10\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="CV10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: CV10.elf
+ 
+arm-none-eabi-size   CV10.elf 
+arm-none-eabi-objdump -h -S  CV10.elf  > "CV10.list"
+   text	   data	    bss	    dec	    hex	filename
+  16056	    136	   2048	  18240	   4740	CV10.elf
+Finished building: default.size.stdout
+ 
+Finished building: CV10.list
+ 
+11:53:36 **** Incremental Build of configuration Debug for project CV10 ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "CV10.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Temp\xrotre05\MKS\CV10\CV10\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="CV10.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: CV10.elf
+ 
+arm-none-eabi-size   CV10.elf 
+arm-none-eabi-objdump -h -S  CV10.elf  > "CV10.list"
+   text	   data	    bss	    dec	    hex	filename
+  16100	    136	   2048	  18284	   476c	CV10.elf
+Finished building: default.size.stdout
+ 
+Finished building: CV10.list
+ 
+11:54:02 **** Incremental Build of configuration Debug for project CV10 ****
+make -j4 all 
+arm-none-eabi-size   CV10.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16100	    136	   2048	  18284	   476c	CV10.elf
+Finished building: default.size.stdout
+ 
+11:55:50 **** Incremental Build of configuration Debug for project CV10 ****
+make -j4 all 
+arm-none-eabi-size   CV10.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16100	    136	   2048	  18284	   476c	CV10.elf
+Finished building: default.size.stdout
+ 
+11:56:34 **** Incremental Build of configuration Debug for project CV10 ****
+make -j4 all 
+arm-none-eabi-size   CV10.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16100	    136	   2048	  18284	   476c	CV10.elf
+Finished building: default.size.stdout
  
