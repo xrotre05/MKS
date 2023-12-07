@@ -45,7 +45,7 @@ void step(int x, int y, bool btn){
 
 };
 
-void circle(int radius){
+void circle(int radius,bool arc){
 
 	float x;
 	float y;
@@ -54,25 +54,48 @@ void circle(int radius){
 	int sx;
 	int sy;
 
-	for (float phi=0; phi < (2*M_PI+M_PI/25); phi+=M_PI/25){
-		x= radius*cosf(phi);
-		y= radius*sinf(phi);
-		step(x,y,1);
+	if (arc){
+		for (float phi=M_PI/2; phi < (3*M_PI/2); phi+=M_PI/25){
+					x= radius*cosf(phi);
+					y= radius*sinf(phi);
+					step(x,y,1);
 
-		dx=x-sx;
-		dy=y-sy;
-		sx+=dx;
-		sy+=dy;
+					dx=x-sx;
+					dy=y-sy;
+					sx+=dx;
+					sy+=dy;
+				}
+
+	}else{
+		for (float phi=0; phi < (2*M_PI+M_PI/25); phi+=M_PI/25){
+			x= radius*cosf(phi);
+			y= radius*sinf(phi);
+			step(x,y,1);
+
+			dx=x-sx;
+			dy=y-sy;
+			sx+=dx;
+			sy+=dy;
+		}
 	}
 };
 
 
 void smile(int radius){
-	circle(radius);
-	step(-10,-10,0);
-	circle(radius-15);
-	step(+20,0,0);
-	circle(radius-15);
+	circle(radius,0);
+	step(0,0,0);
+	step(-50,50,0);
+	circle(radius-15,0);
+	step(0,0,0);
+	step(100,0,0);
+	circle(radius-15,0);
+	step(0,0,0);
+	step(-50,50,1);
+	step(0,30,0);
+	step(65,10,0);
+	circle(radius-5,1);
+
+
 };
 /* USER CODE END PD */
 
@@ -147,8 +170,8 @@ int main(void)
 		btn=HAL_GPIO_ReadPin(USER_Btn_GPIO_Port,USER_Btn_Pin);
 		if (btn==1){
 			//step(10,-3,btn);
-			circle(20);
-
+			//circle(20,1);
+			smile(20);
 		}else{
 			step(0,0,0);
 		}
