@@ -54,30 +54,28 @@ void circle(int radius,bool arc){
 	int sx;
 	int sy;
 
-	if (arc){
-		for (float phi=M_PI/2; phi < (3*M_PI/2); phi+=M_PI/25){
-					x= radius*cosf(phi);
-					y= radius*sinf(phi);
-					step(x,y,1);
+	int st;
+	int en;
 
-					dx=x-sx;
-					dy=y-sy;
-					sx+=dx;
-					sy+=dy;
-				}
+	if (arc){
+		st =(M_PI/2);
+		en =(3*M_PI/2);
 
 	}else{
-		for (float phi=0; phi < (2*M_PI+M_PI/25); phi+=M_PI/25){
-			x= radius*cosf(phi);
-			y= radius*sinf(phi);
-			step(x,y,1);
-
-			dx=x-sx;
-			dy=y-sy;
-			sx+=dx;
-			sy+=dy;
-		}
+		st=0;
+		en=(2*M_PI+M_PI/25);
 	}
+
+	for (float phi=st; phi < en; phi+=M_PI/25){
+				x= radius*cosf(phi);
+				y= radius*sinf(phi);
+				step(x,y,1);
+
+				dx=x-sx;
+				dy=y-sy;
+				sx+=dx;
+				sy+=dy;
+			}
 };
 
 
@@ -97,6 +95,8 @@ void smile(int radius){
 
 
 };
+
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -168,7 +168,7 @@ int main(void)
 
 		/* USER CODE BEGIN 3 */
 		btn=HAL_GPIO_ReadPin(USER_Btn_GPIO_Port,USER_Btn_Pin);
-		if (btn==1){
+		if (btn){
 			//step(10,-3,btn);
 			//circle(20,1);
 			smile(20);
