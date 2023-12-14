@@ -54,28 +54,30 @@ void circle(int radius,bool arc){
 	int sx;
 	int sy;
 
-	int st;
-	int en;
-
 	if (arc){
-		st =(M_PI/2);
-		en =(3*M_PI/2);
+		for (float phi=M_PI/2; phi < (3*M_PI/2); phi+=M_PI/25){
+			x= radius*cosf(phi);
+			y= radius*sinf(phi);
+			step(x,y,1);
+
+			dx=x-sx;
+			dy=y-sy;
+			sx+=dx;
+			sy+=dy;
+		}
 
 	}else{
-		st=0;
-		en=(2*M_PI+M_PI/25);
+		for (float phi=0; phi < (2*M_PI+M_PI/25); phi+=M_PI/25){
+			x= radius*cosf(phi);
+			y= radius*sinf(phi);
+			step(x,y,1);
+
+			dx=x-sx;
+			dy=y-sy;
+			sx+=dx;
+			sy+=dy;
+		}
 	}
-
-	for (float phi=st; phi < en; phi+=M_PI/25){
-				x= radius*cosf(phi);
-				y= radius*sinf(phi);
-				step(x,y,1);
-
-				dx=x-sx;
-				dy=y-sy;
-				sx+=dx;
-				sy+=dy;
-			}
 };
 
 
