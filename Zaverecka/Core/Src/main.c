@@ -107,7 +107,7 @@ int main(void)
 
 
 
-		switch(state){
+		switch(state){   //state change
 		case 1:
 			sct_snake(100);
 			HAL_Delay(500);
@@ -148,31 +148,25 @@ int main(void)
 			sct_snake(400);
 			HAL_Delay(500);
 			break;
-		case 0:
-			state=10;
-			break;
-		case 11:
-			state=1;
-			break;
 		default:
 			sct_snake(000);
 			state=1;
 			break;
 		}
 
-
+		// button push
 		if (HAL_GPIO_ReadPin(S1_GPIO_Port,S1_Pin)==0){
 			direct=0; //S1
 		}else if(HAL_GPIO_ReadPin(S2_GPIO_Port,S2_Pin)==0) {
 			direct=1; //S2
 		}
 
-		if (direct==1){
-			if (state==1){
+		if (direct==1){		//direction change
+			if (state==1){  //direction <-
 				state=10;
 			}else{
 				state--;}
-		}else{
+		}else{				//direction ->
 			if (state==10){
 				state=1;
 			}else{
