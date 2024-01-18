@@ -93,7 +93,8 @@ int main(void)
 	sct_init();
 	sct_value(000);
 	HAL_Delay(500);
-
+	uint32_t state=1;
+	uint32_t direct=0;
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -103,39 +104,83 @@ int main(void)
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
-		/*uint32_t state=1;
+
+
 
 		switch(state){
 		case 1:
 			sct_snake(100);
 			HAL_Delay(500);
-			state++;
+			break;
 		case 2:
-			sct_snake(010);
+			sct_snake(10);
 			HAL_Delay(500);
-			state--;
-		}*/
+			break;
+		case 3:
+			sct_snake(1);
+			HAL_Delay(500);
+			break;
+		case 4:
+			sct_snake(2);
+			HAL_Delay(500);
+			break;
+		case 5:
+			sct_snake(3);
+			HAL_Delay(500);
+			break;
+		case 6:
+			sct_snake(4);
+			HAL_Delay(500);
+			break;
+		case 7:
+			sct_snake(20);
+			HAL_Delay(500);
+			break;
+		case 8:
+			sct_snake(200);
+			HAL_Delay(500);
+			break;
+		case 9:
+			sct_snake(300);
+			HAL_Delay(500);
+			break;
+		case 10:
+			sct_snake(400);
+			HAL_Delay(500);
+			break;
+		case 0:
+			state=10;
+			break;
+		case 11:
+			state=1;
+			break;
+		default:
+			sct_snake(000);
+			state=1;
+			break;
+		}
 
-		sct_snake(100);
-		HAL_Delay(500);
-		sct_snake(10);
-		HAL_Delay(500);
-		sct_snake(1);
-		HAL_Delay(500);
-		sct_snake(2);
-		HAL_Delay(500);
-		sct_snake(3);
-		HAL_Delay(500);
-		sct_snake(4);
-		HAL_Delay(500);
-		sct_snake(20);
-		HAL_Delay(500);
-		sct_snake(200);
-		HAL_Delay(500);
-		sct_snake(300);
-		HAL_Delay(500);
-		sct_snake(400);
-		HAL_Delay(500);
+
+		if (HAL_GPIO_ReadPin(S1_GPIO_Port,S1_Pin)==0){
+			direct=0; //S1
+		}else if(HAL_GPIO_ReadPin(S2_GPIO_Port,S2_Pin)==0) {
+			direct=1; //S2
+		}
+
+		if (direct==1){
+			if (state==1){
+				state=10;
+			}else{
+				state--;}
+		}else{
+			if (state==10){
+				state=1;
+			}else{
+				state++;}
+		}
+
+
+
 
 		/*for(uint8_t i = 0; i < 3; i++){
 	  		  sct_snake(111*i);
@@ -246,6 +291,18 @@ static void MX_GPIO_Init(void)
 	GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+
+	/*Configure GPIO pin : S2_Pin */
+	GPIO_InitStruct.Pin = S2_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(S2_GPIO_Port, &GPIO_InitStruct);
+
+	/*Configure GPIO pin : S1_Pin */
+	GPIO_InitStruct.Pin = S1_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
+	HAL_GPIO_Init(S1_GPIO_Port, &GPIO_InitStruct);
 
 	/*Configure GPIO pin : LD2_Pin */
 	GPIO_InitStruct.Pin = LD2_Pin;
